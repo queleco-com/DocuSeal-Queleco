@@ -1,0 +1,7 @@
+<%# Quéleco : remplace app/views/layouts/_head_tags.html.erb de DocuSeal 3.2.6 (titre de l'onglet + feuille de style Quéleco).
+    v = 10 premiers caractères du SHA-256 de theme.css, vérifiés par scripts/test_check_pin.py. %>
+<title>
+  <%= content_for(:html_title) || 'Quéleco Sign' %>
+</title>
+<%= render 'shared/meta' %>
+<link rel="stylesheet" href="/queleco/theme.css?v=6668537f88">
