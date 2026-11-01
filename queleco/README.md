@@ -46,7 +46,7 @@ de Quéleco : celle de la refonte HIG de `queleco-b2b` (`docs/design/refonte-hig
 - `habillage/icones/` remplace les icônes d'onglet de DocuSeal dans `/app/public/` (mêmes noms).
 
 `theme.css` ne change que les variables de couleur de daisyUI, la police système, les coins et le logo :
-aucune mise en page. Le logo garde ses proportions (846,6 × 172,7), jamais dans une boîte carrée.
+aucune mise en page. Le logo garde ses proportions (1178,3 × 172,7 : Q coché et « Sign », choisi par Tristan le 2026-11-01), jamais dans une boîte carrée.
 Elle est chargée avant la feuille de DocuSeal : chaque règle commence par `html[data-theme]`.
 
 À chaque changement de version de DocuSeal, comparer `_head_tags.html.erb` au fichier d'origine et
