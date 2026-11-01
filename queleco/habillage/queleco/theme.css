@@ -36,11 +36,11 @@ html[data-theme] body { background: transparent !important; }
 
 html[data-theme] :is(h1, h2, h3) { letter-spacing: -0.01em; }
 
-/* Logo : le lockup officiel, à ses proportions (846,6 × 172,7), à la place du logo et du nom DocuSeal
+/* Logo : le lockup Quéleco Sign (Q coché + « Sign »), à ses proportions (1178,3 × 172,7), à la place du logo et du nom DocuSeal
    (en-têtes, signature et page « document signé »). */
 html[data-theme] :is(a[href="/"].font-bold, a[href="/"]:has(> h1)) {
   display: inline-block !important;
-  width: calc(var(--queleco-logo-h, 32px) * 4.902);
+  width: calc(var(--queleco-logo-h, 32px) * 6.823);
   height: var(--queleco-logo-h, 32px);
   background: url("/queleco/lockup-clair.svg") no-repeat center / contain;
   font-size: 0 !important;
