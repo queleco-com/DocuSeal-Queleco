@@ -4,6 +4,7 @@
 FROM docuseal/docuseal:3.2.6@sha256:58c76f6d28561b7b8f0bb447941a7e2bac376300ea96871125f6c762e7e63385
 COPY --chown=docuseal:docuseal queleco/queleco_templates_pdf_controller.rb /app/app/controllers/api/queleco_templates_pdf_controller.rb
 COPY --chown=docuseal:docuseal queleco/queleco_routes.rb /app/config/initializers/queleco_routes.rb
+COPY --chown=docuseal:docuseal queleco/queleco_trusted_proxies.rb /app/config/initializers/queleco_trusted_proxies.rb
 COPY --chown=docuseal:docuseal queleco/habillage/_head_tags.html.erb /app/app/views/layouts/_head_tags.html.erb
 COPY --chown=docuseal:docuseal queleco/habillage/_meta.html.erb /app/app/views/shared/_meta.html.erb
 COPY --chown=docuseal:docuseal queleco/habillage/queleco/theme.css queleco/habillage/queleco/lockup-clair.svg queleco/habillage/queleco/symbole.svg /app/public/queleco/
