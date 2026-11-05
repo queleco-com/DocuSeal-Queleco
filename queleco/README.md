@@ -1,8 +1,8 @@
 # Modification Quéleco de DocuSeal
 
-L'image de ce dépôt est l'image officielle de DocuSeal, édition libre, plus **deux ajouts** :
-`POST /api/templates/pdf`, qui crée un modèle à partir d'un PDF avec la clé API, et
-[l'habillage](#habillage) aux couleurs de Quéleco.
+L'image de ce dépôt est l'image officielle de DocuSeal, édition libre, plus **trois ajouts** :
+`POST /api/templates/pdf`, qui crée un modèle à partir d'un PDF avec la clé API,
+[l'habillage](#habillage) aux couleurs de Quéleco et [la signature dans le portail](#signature-dans-le-portail).
 
 Sans elle, chaque nouveau modèle (ou nouvelle version d'un contrat) devait être glissé à la main dans
 l'interface : l'édition libre répond `404 This feature is available in Pro Edition`. Avec elle, le CRM
@@ -33,6 +33,27 @@ Corps JSON, au format de l'API Pro pour un PDF en base64 :
 
 `queleco/essai.py` (bibliothèque standard) crée un modèle depuis un PDF à un champ et vérifie un refus. La CI le lance sur l'image construite depuis ce dépôt (`api-pdf` dans `check.yml`). À refaire
 à chaque changement de version de DocuSeal : la fonction appelle du code interne qui peut changer.
+
+## Signature dans le portail
+
+Le portail (`queleco-b2b`, Espace client) affiche la page de signature dans sa propre fenêtre, sans envoyer
+le client vers une autre adresse (demande de Tristan, 2026-11-05). Rails envoie `X-Frame-Options: SAMEORIGIN`
+sur toutes les pages, ce qui l'interdit.
+
+- `queleco_cadre.rb` (initialiseur, un intergiciel Rack en tête de pile) lève cet en-tête pour une seule
+  famille de pages : `GET`/`HEAD` de `/s/<slug>` et `/s/<slug>/completed`, celles qu'un signataire ouvre par
+  son lien. Il ajoute à leur CSP `frame-ancestors 'self'` plus les origines de `QUELECO_CADRE_ORIGINES`
+  (espaces entre elles; défaut `https://portail.queleco.com`; une valeur qui n'est pas une origine `https://`
+  exacte est ignorée; vide : rien ne change). Connexion, administration, API et toute autre page gardent
+  `SAMEORIGIN`.
+- `habillage/queleco/cadre.js` : dans un cadre seulement, la page dit au portail `{ source: "queleco-sign",
+  etat: "pret" }`. Aucun renseignement ne part. Le portail ne montre le cadre qu'après ce message, venu de
+  l'origine de Quéleco Sign et de ce cadre-là; sinon il propose le nouvel onglet d'avant.
+- Le témoin de session de DocuSeal est `SameSite=Lax` : `portail.queleco.com` et `sign.queleco.com` sont le
+  même site (`queleco.com`), il est donc envoyé dans le cadre. Une autre adresse du portail sur un autre
+  domaine (ex. `*.up.railway.app`, `*.fly.dev`) ne pourrait pas signer dans le cadre : elle garde le repli.
+
+La CI (`api-pdf`) vérifie les deux en-têtes : `frame-ancestors` sur `/s/<slug>`, `SAMEORIGIN` sur `/sign_in`.
 
 ## Habillage
 
